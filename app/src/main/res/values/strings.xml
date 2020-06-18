@@ -19,6 +19,7 @@
     <string name="change_it_to_put_the_piller_into_sleep_mode_and_save_battery">Change it to put \"The Piller\" into sleep mode and save battery.</string>
     <string name="set_the_volume_and_the_sound">Set the volume and the sound.</string>
     <string name="btConnection">List of paired Bluetooth devices</string>
+    <string name="discover">Search for another device</string>
     <string-array name="melodies">
         <item>Melody 1</item>
         <item>Melody 2</item>

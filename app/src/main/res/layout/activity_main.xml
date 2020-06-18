@@ -263,9 +263,7 @@
             android:layout_marginEnd="13dp"
             android:layout_marginRight="13dp"
             android:layout_marginBottom="143dp"
-            android:theme="@style/switchMode"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:theme="@style/switchMode" />
 
         <TextView
             android:id="@+id/notificationsText"
@@ -307,14 +305,7 @@
             android:fontFamily="@font/isocteur"
             android:text="@string/sleep_mode"
             android:textColor="#000000"
-            android:textSize="24sp"
-            app:drawableTint="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/switchMode"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.65" />
+            android:textSize="24sp" />
 
         <Switch
             android:id="@+id/switchNotifications"
@@ -333,13 +324,10 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="61dp"
             android:checked="true"
-            android:theme="@style/switchNotifications"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="398dp" />
+            android:theme="@style/switchNotifications" />
 
         <Button
             android:id="@+id/aboutUs"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="139dp"
             android:layout_height="27dp"
             android:layout_alignParentStart="true"
@@ -374,8 +362,7 @@
             android:layout_marginTop="18dp"
             android:layout_marginEnd="133dp"
             android:layout_marginRight="133dp"
-            android:layout_marginBottom="320dp"
-            app:srcCompat="@drawable/ic_graphic_eq_black_24dp" />
+            android:layout_marginBottom="320dp" />
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -412,13 +399,13 @@
             android:layout_height="match_parent"
             android:background="@drawable/border"
             android:padding="15dp"
-            android:visibility="invisible" >
+            android:visibility="invisible">
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bt-connection"
         android:layout_width="367dp"
         android:layout_height="357dp"
@@ -428,22 +415,63 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
-        android:visibility="visible"
+        android:background="@drawable/border"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/schedule"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appName">
 
+        <Button
+            android:id="@+id/discoverButton"
+            android:layout_width="355dp"
+            android:layout_height="36dp"
+            android:text="@string/discover"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ListView
+            android:id="@+id/pairedDevices"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/discoverButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btConnectionName"
+            app:layout_constraintVertical_bias="0.39" />
+
+        <ListView
+            android:id="@+id/discoveredDevices"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/discoverButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btConnectionName"
+            app:layout_constraintVertical_bias="0.39" />
+
         <TextView
-            android:id="@+id/bt-connection-name"
-            android:layout_width="match_parent"
+            android:id="@+id/btConnectionName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/btConnection"
             android:textSize="22sp"
-            app:autoSizeTextType="uniform" />
+            android:visibility="visible"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
