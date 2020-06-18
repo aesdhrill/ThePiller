@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     ImageView notificationsOff;
     RelativeLayout settingsWindow;
     RelativeLayout frame;
+    RelativeLayout btStuff;
     SharedPreferences globalSettings;
 
 
@@ -318,7 +319,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setOnItemSelectedListener(this);
 
 
+//        btStuff= findViewById(R.id.btConnection);
+//        btStuff.setVisibility(View.VISIBLE);
+//
+//        btStuff.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(btStuff.getVisibility()==View.VISIBLE){
+//                    switchSound.setClickable(false);
+//                    switchLight.setClickable(false);
+//                    switchLight.setClickable(false);
+//                }
+//            }
+//        }
 
+//            );
     }
 
 
