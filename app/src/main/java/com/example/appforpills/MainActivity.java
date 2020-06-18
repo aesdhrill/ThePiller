@@ -1,6 +1,7 @@
 package com.example.appforpills;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.TextViewCompat;
 
 import android.app.Activity;
 import android.app.Application;
@@ -9,6 +10,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Button Bschedule = findViewById(R.id.schedule);
         Bschedule.setText(stringFromJNI());
 
+//        TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(,17,1, TypedValue.COMPLEX_UNIT_DIP);
+
 
         globalSettings=getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor= globalSettings.edit();
@@ -101,11 +105,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         // sound graphics
-        soundOn = (ImageView) findViewById(R.id.soundOn);
-        soundOff = (ImageView) findViewById(R.id.soundOff);
+        soundOn = findViewById(R.id.soundOn);
+        soundOff = findViewById(R.id.soundOff);
 
         // sound switch
-        switchSound = (Switch) findViewById(R.id.switchSound);
+        switchSound = findViewById(R.id.switchSound);
         if (globalSettings.getBoolean("soundState",false)){
             soundOn.setVisibility(View.VISIBLE);
             soundOff.setVisibility(View.INVISIBLE);
@@ -144,15 +148,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         bluetoothOff = findViewById(R.id.bluetoothOff);
 
         // bluetooth switch
-        switchBluetooth = (Switch) findViewById(R.id.switchBluetooth);
-        switchBluetooth = (Switch) findViewById(R.id.switchBluetooth);
+        switchBluetooth = findViewById(R.id.switchBluetooth);
+        switchBluetooth = findViewById(R.id.switchBluetooth);
         if (!(globalSettings.getBoolean("isBtAvailable",true))) switchBluetooth.setClickable(false);
-        if (btAdapter.isEnabled()){
-            editor.putBoolean("btState",true).apply();
-        }else {
-            editor.putBoolean("btState",false).apply();;
-        }
-        if (globalSettings.getBoolean("btState",false)){
+//        if (btAdapter.isEnabled()){
+////            editor.putBoolean("btState",true).apply();
+//        }else {
+////            editor.putBoolean("btState",false).apply();;
+//        }
+        if (/*globalSettings.getBoolean("btState",false)*/btAdapter.isEnabled()){
             bluetoothOn.setVisibility(View.VISIBLE);
             bluetoothOff.setVisibility(View.INVISIBLE);
             switchBluetooth.setChecked(true);
@@ -169,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     bluetoothOn.setVisibility(View.VISIBLE);
                     bluetoothOff.setVisibility(View.INVISIBLE);
 //                    application.setBtState(true);
-                    editor.putBoolean("btState",true).apply();
+//                    editor.putBoolean("btState",true).apply();
                     if (!(btAdapter.isEnabled())){
                         Intent turnOnBT= new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(turnOnBT,ENABLE_BT_REQUEST_CODE);
@@ -180,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     bluetoothOn.setVisibility(View.INVISIBLE);
                     bluetoothOff.setVisibility(View.VISIBLE);
 //                    application.setBtState(false);
-                    editor.putBoolean("btState",false).apply();
+//                    editor.putBoolean("btState",false).apply();
                     btAdapter.disable();
                     Toast.makeText(getApplicationContext(),"This phone's Bluetooth adapter has been turned off", Toast.LENGTH_SHORT).show();
                 }
@@ -189,11 +193,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         // light graphics
-        lightbulbOn = (ImageView) findViewById(R.id.lightOn);
+        lightbulbOn =  findViewById(R.id.lightOn);
         lightbulbOff = findViewById(R.id.lightbulb);
 
         // light switch
-        switchLight = (Switch) findViewById(R.id.switchLight);
+        switchLight = findViewById(R.id.switchLight);
         if (globalSettings.getBoolean("ledState",false)){
             lightbulbOn.setVisibility(View.VISIBLE);
             switchLight.setChecked(true);
@@ -205,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switchLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == true) {
+                if (isChecked) {
                     lightbulbOn.setVisibility(View.VISIBLE);
 //                    application.setLedState(true);
                     editor.putBoolean("ledState",true).apply();
@@ -222,8 +226,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         // open settings
 
         settingsButton = findViewById(R.id.settingsButton);
-        settingsWindow = (RelativeLayout) findViewById(R.id.settingsWindow);
-        frame = (RelativeLayout) findViewById(R.id.frame);
+        settingsWindow = findViewById(R.id.settingsWindow);
+        frame = findViewById(R.id.frame);
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         // mode graphics
-        sleepModeOn = (ImageView) findViewById(R.id.sleepMode);
+        sleepModeOn = findViewById(R.id.sleepMode);
         // mode switch
         switchMode = findViewById(R.id.switchMode);
         if (/*application.getSleepState()*/globalSettings.getBoolean("sleepMode",false)){
@@ -277,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         notificationsOff = findViewById(R.id.notificationsOff);
 
         // notifications switch
-        switchNotifications = (Switch) findViewById(R.id.switchNotifications);
+        switchNotifications = findViewById(R.id.switchNotifications);
 
         if (globalSettings.getBoolean("notifications",false)/*application.getNotificationState()*/){
             notificationsOff.setVisibility(View.INVISIBLE);
