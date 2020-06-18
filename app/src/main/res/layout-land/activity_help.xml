@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/frameText4"
+        android:layout_width="234dp"
+        android:layout_height="56dp"
+        app:layout_constraintBottom_toBottomOf="@+id/schedule"
+        app:layout_constraintEnd_toEndOf="@+id/schedule"
+        app:layout_constraintStart_toStartOf="@+id/schedule"
+        app:layout_constraintTop_toTopOf="@+id/schedule"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/border" />
+
+    <ImageView
+        android:id="@+id/frameText2"
+        android:layout_width="177dp"
+        android:layout_height="53dp"
+        app:layout_constraintBottom_toBottomOf="@+id/light"
+        app:layout_constraintEnd_toEndOf="@+id/light"
+        app:layout_constraintStart_toStartOf="@+id/light"
+        app:layout_constraintTop_toTopOf="@+id/light"
+        app:srcCompat="@drawable/border" />
+
+    <TextView
+        android:id="@+id/light"
+        android:layout_width="176dp"
+        android:layout_height="53dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/turn_on_the_light_to_localize_your_box"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.256" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="188dp"
+        android:layout_height="51dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/turn_on_bluetooth_on_your_mobile_device"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.261" />
+
+    <ImageView
+        android:id="@+id/frameText3"
+        android:layout_width="188dp"
+        android:layout_height="52dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:srcCompat="@drawable/border" />
+
+    <TextView
+        android:id="@+id/sound"
+        android:layout_width="188dp"
+        android:layout_height="53dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/turn_on_the_sound_to_localize_your_box"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.262" />
+
+    <ImageView
+        android:id="@+id/frameText"
+        android:layout_width="190dp"
+        android:layout_height="53dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sound"
+        app:layout_constraintEnd_toEndOf="@+id/sound"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/sound"
+        app:layout_constraintTop_toTopOf="@+id/sound"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/border" />
+
+    <ImageView
+        android:id="@+id/soundOff"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.099"
+        app:srcCompat="@drawable/ic_volume_off_black_24dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.099"
+        app:srcCompat="@drawable/ic_bluetooth_disabled_black_24dp" />
+
+    <ImageView
+        android:id="@+id/lightOff"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.832"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.099"
+        app:srcCompat="@drawable/ic_lightbulb_outline_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/exitHelp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#FFFFFF"
+        android:onClick="mainActivity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.913"
+        app:srcCompat="@drawable/ic_close_black_40dp" />
+
+    <ImageButton
+        android:id="@+id/nextHelp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="32dp"
+        android:background="#FFFFFF"
+        android:onClick="helpActivity2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_chevron_right_black_40dp" />
+
+    <TextView
+        android:id="@+id/schedule"
+        android:layout_width="233dp"
+        android:layout_height="57dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/click_it_to_open_schedule_tab_and_set_reminders"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.748" />
+
+    <ImageView
+        android:id="@+id/scheduleFoto"
+        android:layout_width="305dp"
+        android:layout_height="68dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.53"
+        app:srcCompat="@drawable/schedulefoto" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/sound2"
+        android:layout_width="154dp"
+        android:layout_height="97dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.143"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7"
+        app:srcCompat="@drawable/helploudness" />
+
+    <ImageView
+        android:id="@+id/melody2"
+        android:layout_width="189dp"
+        android:layout_height="63dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.688"
+        app:srcCompat="@drawable/helpmelody" />
+
+    <TextView
+        android:id="@+id/sound"
+        android:layout_width="284dp"
+        android:layout_height="51dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/set_the_volume_and_the_sound"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.83" />
+
+    <ImageView
+        android:id="@+id/frameText2"
+        android:layout_width="309dp"
+        android:layout_height="75dp"
+        app:layout_constraintBottom_toBottomOf="@+id/notifications"
+        app:layout_constraintEnd_toEndOf="@+id/notifications"
+        app:layout_constraintStart_toStartOf="@+id/notifications"
+        app:layout_constraintTop_toTopOf="@+id/notifications"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/border" />
+
+    <ImageView
+        android:id="@+id/frameText9"
+        android:layout_width="288dp"
+        android:layout_height="54dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sound"
+        app:layout_constraintEnd_toEndOf="@+id/sound"
+        app:layout_constraintStart_toStartOf="@+id/sound"
+        app:layout_constraintTop_toTopOf="@+id/sound"
+        app:srcCompat="@drawable/border" />
+
+    <TextView
+        android:id="@+id/sleepModeText"
+        android:layout_width="267dp"
+        android:layout_height="49dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="@font/isocteur"
+        android:gravity="center"
+        android:text="@string/sleep_mode"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:drawableTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.392" />
+
+    <TextView
+        android:id="@+id/notificationsText"
+        android:layout_width="363dp"
+        android:layout_height="72dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginRight="22dp"
+        android:fontFamily="@font/isocteur"
+        android:gravity="center"
+        android:text="@string/enable_notifications"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/frameText"
+        android:layout_width="308dp"
+        android:layout_height="77dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sleepMode"
+        app:layout_constraintEnd_toEndOf="@+id/sleepMode"
+        app:layout_constraintStart_toStartOf="@+id/sleepMode"
+        app:layout_constraintTop_toTopOf="@+id/sleepMode"
+        app:srcCompat="@drawable/border" />
+
+    <ImageButton
+        android:id="@+id/nextHelp2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="32dp"
+        android:background="#FFFFFF"
+        android:onClick="helpActivity"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_chevron_right_black_40dp" />
+
+    <ImageButton
+        android:id="@+id/exitHelp2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#FFFFFF"
+        android:onClick="mainActivity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:srcCompat="@drawable/ic_close_black_40dp" />
+
+    <TextView
+        android:id="@+id/notifications"
+        android:layout_width="305dp"
+        android:layout_height="75dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/change_it_to_stop_the_application_from_sending_pop_up_s_alerting_when_too_far_from_the_device"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.196" />
+
+    <TextView
+        android:id="@+id/sleepMode"
+        android:layout_width="308dp"
+        android:layout_height="74dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:text="@string/change_it_to_put_the_piller_into_sleep_mode_and_save_battery"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.517" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

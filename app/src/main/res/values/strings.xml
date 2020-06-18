@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">The Piller</string>
+    <string name="schedule">SCHEDULE</string>
+    <string name="the_piller">The Piller</string>
+    <string name="sleep_mode">Sleep mode</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="settings">SETTINGS</string>
+    <string name="about_us">About Us</string>
+    <string name="greetings">Greetings!</string>
+    <string name="we_are_glad_that_you_believed_in_our_idea_and_got_yourself_pillbox_the_game_changer_when_it_comes_to_health_related_issues_this_combo_box_application_will_make_sure_you_always_have_drugs_handy_and_can_take_them_on_time_they_call_us_unforgettables_the_group_of_five_individuals_and_we_strive_for_changing_the_world_we_want_to_help_those_who_tend_to_forget_about_medicaments_but_want_to_improve_health">We are glad that you believed in our idea and got yourself “Pillbox”- the game-changer when it comes to health-related issues. This combo [box + application] will make sure you always have drugs handy and can take them on time. They call us “Unforgettables”, the group of five individuals and we strive for changing the world! We want to help those, who tend to forget about medicaments, but want to improve health!</string>
+    <string name="in_case_of_any_questions_contact_us">In case of any questions contact us:</string>
+    <string name="_123_456_78_990">123-456-78-990</string>
+    <string name="todo">TODO</string>
+    <string name="turn_on_the_sound_to_localize_your_box">Turn on the sound to locate your box.</string>
+    <string name="turn_on_the_light_to_localize_your_box">Turn on the light to locate your box.</string>
+    <string name="turn_on_bluetooth_on_your_mobile_device">Turn on bluetooth on your mobile device.</string>
+    <string name="click_it_to_open_schedule_tab_and_set_reminders">Click it to open schedule tab and set reminders.</string>
+    <string name="change_it_to_stop_the_application_from_sending_pop_up_s_alerting_when_too_far_from_the_device">Change it to stop the application from sending pop-up\'s / alerting when too far from the device.</string>
+    <string name="change_it_to_put_the_piller_into_sleep_mode_and_save_battery">Change it to put \"The Piller\" into sleep mode and save battery.</string>
+    <string name="set_the_volume_and_the_sound">Set the volume and the sound.</string>
+    <string name="btConnection">List of paired Bluetooth devices</string>
+    <string-array name="melodies">
+        <item>Melody 1</item>
+        <item>Melody 2</item>
+        <item>Melody 3</item>
+    </string-array>
+    <string-array name="tones">
+    <item>q</item>
+    <item>w</item>
+    <item>e</item>
+</string-array>
+
+</resources>

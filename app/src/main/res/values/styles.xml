@@ -1,0 +1,36 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="progressBar" parent="@style/Theme.AppCompat">
+        <item name="colorAccent">#FF16C0F8</item>
+    </style>
+
+    <style name="switchSound">
+        <item name="colorControlActivated">#FF16C0F8</item>
+    </style>
+
+    <style name="switchLight">
+        <item name="colorControlActivated">#FF16C0F8</item>
+    </style>
+
+    <style name="switchBluetooth">
+        <item name="colorControlActivated">#FF16C0F8</item>
+    </style>
+
+    <style name="switchNotifications">
+        <item name="colorControlActivated">#FF16C0F8</item>
+    </style>
+
+    <style name="switchMode">
+        <item name="colorControlActivated">#FF16C0F8</item>
+    </style>
+
+
+</resources>
