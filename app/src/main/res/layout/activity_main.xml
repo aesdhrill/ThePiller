@@ -213,6 +213,74 @@
         app:srcCompat="@drawable/ic_help_black_24dp" />
 
     <RelativeLayout
+        android:id="@+id/btConnection"
+        android:layout_width="334dp"
+        android:layout_height="381dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/border"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/schedule"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appName">
+
+        <Button
+            android:id="@+id/buttonCloseBTTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="hide"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/discoverButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layerType="software"
+            android:text="@string/discover" />
+
+        <ListView
+            android:id="@+id/pairedDevices"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/btConnectionName"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50sp"
+            android:focusable="true"
+            android:visibility="visible" />
+
+
+        <ListView
+            android:id="@+id/discoveredDevices"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/btConnectionName"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:focusable="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/btConnectionName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="@string/btConnection"
+            android:textSize="22sp"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/settingsWindow"
         android:layout_width="307dp"
         android:layout_height="430dp"
@@ -402,74 +470,5 @@
             android:layout_marginBottom="221dp" />
 
     </RelativeLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bt-connection"
-        android:layout_width="367dp"
-        android:layout_height="357dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/border"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/schedule"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appName">
-
-        <Button
-            android:id="@+id/discoverButton"
-            android:layout_width="355dp"
-            android:layout_height="36dp"
-            android:text="@string/discover"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ListView
-            android:id="@+id/pairedDevices"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/discoverButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btConnectionName"
-            app:layout_constraintVertical_bias="0.39" />
-
-        <ListView
-            android:id="@+id/discoveredDevices"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/discoverButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btConnectionName"
-            app:layout_constraintVertical_bias="0.39" />
-
-        <TextView
-            android:id="@+id/btConnectionName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/btConnection"
-            android:textSize="22sp"
-            android:visibility="visible"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@
     package="com.example.appforpills">
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -12,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".BluetoothDataService"/>
-        <activity android:name=".helpActivity2"></activity>
+        <activity android:name=".helpActivity2" />
         <activity android:name=".helpActivity" />
         <activity android:name=".AboutUs" />
         <activity android:name=".SplashActivity">

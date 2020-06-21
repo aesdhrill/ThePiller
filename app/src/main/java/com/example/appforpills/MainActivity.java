@@ -67,6 +67,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Set<BluetoothDevice> pairedDevices;
     public static final String PREFERENCES= "globalValues";
 
+    @Override
+    public void onActivityResult(int requestCode,int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ENABLE_BT_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "Bluetooth has been enabled", Toast.LENGTH_SHORT).show();
+                switchBluetooth.setChecked(true);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "Failed to enable Bluetooth", Toast.LENGTH_SHORT).show();
+                switchBluetooth.setChecked(false);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
