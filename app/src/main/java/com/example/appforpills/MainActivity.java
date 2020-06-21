@@ -1,17 +1,13 @@
 package com.example.appforpills;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.TextViewCompat;
-
 import android.app.Activity;
-import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.TypedValue;
-import android.view.Menu;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,14 +18,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.content.SharedPreferences;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Set;
-
-import static java.sql.Types.NULL;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -44,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Switch switchLight;
     Switch switchMode;
     Switch switchNotifications;
+    Button btHideButton;
+    Button btShowButton;
     Button settingsButton;
     ImageView bluetoothOn;
     ImageView bluetoothOff;
@@ -57,15 +53,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     RelativeLayout frame;
     RelativeLayout btStuff;
     SharedPreferences globalSettings;
-
-
+    ArrayAdapter pairedDeviceList;
+    ArrayList discoveredDeviceList;
+    ListView pairedDeviceListView;
+    ListView discoveredDeviceListView;
+    Set<BluetoothDevice> pairedDevices;
 
 
     private static final int ENABLE_BT_REQUEST_CODE=1;
 
     BluetoothAdapter btAdapter=BluetoothAdapter.getDefaultAdapter();
-    private Set<BluetoothDevice> pairedDevices;
+
     public static final String PREFERENCES= "globalValues";
+
+    public void makeList(){
+        pairedDeviceList.clear();
+        if (pairedDevices.size()>0) {
+            for (BluetoothDevice device : pairedDevices) pairedDeviceList.add(device.getName());
+        }else pairedDeviceList.add("No devices paired or Bluetooth turned off");
+        pairedDeviceListView=findViewById(R.id.pairedDevices);
+        pairedDeviceListView.setAdapter(pairedDeviceList);
+    }
 
     @Override
     public void onActivityResult(int requestCode,int resultCode, Intent data) {
@@ -92,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Bschedule.setText(stringFromJNI());
 
 //        TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(,17,1, TypedValue.COMPLEX_UNIT_DIP);
-
+        pairedDeviceList = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1);
 
         globalSettings=getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor= globalSettings.edit();
@@ -117,6 +125,47 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             editor.putBoolean("isBtAvailable",false);
             editor.apply();
         }
+        pairedDevices = btAdapter.getBondedDevices();
+
+
+        //        Get paired devices and adapt the for ListView
+
+//        pairedDeviceList = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,pairedDevices);
+        makeList();
+
+        //btmenu
+        btHideButton=findViewById(R.id.buttonCloseBTTest);
+        btShowButton=findViewById(R.id.btShowButtonTest);
+        btStuff=findViewById(R.id.btConnection);
+        btHideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              if (btStuff.getVisibility()==View.VISIBLE){
+                  btStuff.setVisibility(View.INVISIBLE);
+                  btHideButton.setVisibility(View.INVISIBLE);
+                  if (btAdapter.isEnabled()) btShowButton.setVisibility(View.VISIBLE);
+              }
+            }
+        });
+        btShowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                if (btStuff.getVisibility()==View.INVISIBLE){
+                    btShowButton.setVisibility(View.INVISIBLE);
+                    btHideButton.setVisibility(View.VISIBLE);
+                    btStuff.setVisibility(View.VISIBLE);
+                }
+                if(btAdapter.isEnabled()) {
+                    pairedDeviceList.clear();
+                    if (pairedDevices.size()>0) {
+                        for (BluetoothDevice device : pairedDevices) pairedDeviceList.add(device.getName());
+                    }else pairedDeviceList.add("No devices paired or\nBluetooth turned off");
+                }
+
+            }
+        });
+
+
 
 
         // sound graphics
@@ -166,19 +215,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switchBluetooth = findViewById(R.id.switchBluetooth);
         switchBluetooth = findViewById(R.id.switchBluetooth);
         if (!(globalSettings.getBoolean("isBtAvailable",true))) switchBluetooth.setClickable(false);
-//        if (btAdapter.isEnabled()){
-////            editor.putBoolean("btState",true).apply();
-//        }else {
-////            editor.putBoolean("btState",false).apply();;
-//        }
         if (/*globalSettings.getBoolean("btState",false)*/btAdapter.isEnabled()){
             bluetoothOn.setVisibility(View.VISIBLE);
             bluetoothOff.setVisibility(View.INVISIBLE);
             switchBluetooth.setChecked(true);
+            if (btStuff.getVisibility()==View.INVISIBLE){
+                btShowButton.setVisibility(View.INVISIBLE);
+                btHideButton.setVisibility(View.VISIBLE);
+                btStuff.setVisibility(View.VISIBLE);
+            }
         }else {
             bluetoothOn.setVisibility(View.INVISIBLE);
             bluetoothOff.setVisibility(View.VISIBLE);
             switchBluetooth.setChecked(false);
+            if (btStuff.getVisibility()==View.VISIBLE){
+                btStuff.setVisibility(View.INVISIBLE);
+                btHideButton.setVisibility(View.INVISIBLE);
+                btShowButton.setVisibility(View.VISIBLE);
+            }
         }
 
         switchBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -187,20 +241,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (isChecked) {
                     bluetoothOn.setVisibility(View.VISIBLE);
                     bluetoothOff.setVisibility(View.INVISIBLE);
-//                    application.setBtState(true);
-//                    editor.putBoolean("btState",true).apply();
                     if (!(btAdapter.isEnabled())){
                         Intent turnOnBT= new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(turnOnBT,ENABLE_BT_REQUEST_CODE);
                         Toast.makeText(getApplicationContext(), "Attempting to turn BT on", Toast.LENGTH_SHORT).show();
                     }
+                    pairedDeviceList.clear();
+                    if (pairedDevices.size()>0) {
+                        for (BluetoothDevice device : pairedDevices) pairedDeviceList.add(device.getName());
+                    }else pairedDeviceList.add("No devices paired or Bluetooth turned off");
+                    final Handler delay2sec = new Handler();
+                    delay2sec.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (btStuff.getVisibility()==View.INVISIBLE){
+                                btShowButton.setVisibility(View.INVISIBLE);
+                                btHideButton.setVisibility(View.VISIBLE);
+                                btStuff.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    },2000);
+
                 }
                 else {
                     bluetoothOn.setVisibility(View.INVISIBLE);
                     bluetoothOff.setVisibility(View.VISIBLE);
-//                    application.setBtState(false);
-//                    editor.putBoolean("btState",false).apply();
                     btAdapter.disable();
+                    if (btStuff.getVisibility()==View.VISIBLE){
+                        btStuff.setVisibility(View.INVISIBLE);
+                        btHideButton.setVisibility(View.INVISIBLE);
+                        btShowButton.setVisibility(View.VISIBLE);
+                    }
                     Toast.makeText(getApplicationContext(),"This phone's Bluetooth adapter has been turned off", Toast.LENGTH_SHORT).show();
                 }
 
