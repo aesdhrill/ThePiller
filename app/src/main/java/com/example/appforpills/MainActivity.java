@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,11 +61,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     RelativeLayout btStuff;
     SharedPreferences globalSettings;
     ArrayAdapter pairedDeviceList;
-    ArrayList discoveredDeviceList;
+    ArrayAdapter discoveredDeviceList;
     ListView pairedDeviceListView;
     ListView discoveredDeviceListView;
     Set<BluetoothDevice> pairedDevices;
-    BroadcastReceiver mReceiver;
+    Set<BluetoothDevice> discoveredDevices;
+    TextView btName;
+    TextView btDiscoveredName;
 
     private static final int ENABLE_BT_REQUEST_CODE=1;
     private static final String PREFERENCES= "globalValues";
@@ -77,15 +80,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             for (BluetoothDevice device : pairedDevices) pairedDeviceList.add(device.getName());
         }
         else pairedDeviceList.add("No devices paired or Bluetooth turned off");
-//        pairedDeviceList.notifyDataSetChanged();
         pairedDeviceList.notifyDataSetChanged();
     }
-    private final BroadcastReceiver mReciever = new BroadcastReceiver() {
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            if (BluetoothDevice.ACTION_FOUND.equals(action)){
+//                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                discoveredDevices.add(device);
 
+                discoveredDeviceList.add(device.getName());
+                discoveredDeviceList.notifyDataSetChanged();
+            }
         }
     };
 
@@ -115,13 +123,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
         this.registerReceiver(mReceiver, filter);
 
         // Example of a call to a native method
         Button Bschedule = findViewById(R.id.schedule);
         Bschedule.setText(stringFromJNI());
 
+        btName=findViewById(R.id.btConnectionName);
+        btDiscoveredName=findViewById(R.id.btConnectionNameDiscovered);
+
         pairedDeviceList = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1);
+        discoveredDeviceList = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1);
 
         globalSettings=getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor= globalSettings.edit();
@@ -139,12 +152,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             editor.putBoolean("firstRunDone",true);
             editor.apply();
         }
+        pairedDeviceListView=findViewById(R.id.pairedDevices);
+        pairedDeviceListView.setAdapter(pairedDeviceList);
 
+        discoveredDeviceListView=findViewById(R.id.discoveredDevices);
         discoverButton=findViewById(R.id.discoverButton);
+        discoveredDeviceListView.setAdapter(discoveredDeviceList);
+
         discoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
+                btAdapter.startDiscovery();
+                    Toast.makeText(getApplicationContext(), "Discovering other bluetooth devices...", Toast.LENGTH_SHORT).show();
+                    pairedDeviceListView.setVisibility(View.INVISIBLE);
+                    discoveredDeviceListView.setVisibility(View.VISIBLE);
+                    btName.setVisibility(View.INVISIBLE);
+                    btDiscoveredName.setVisibility(View.VISIBLE);
+//                }else{
+//                    Toast.makeText(getApplicationContext(), "Something went wrong! Discovery has failed to start.", Toast.LENGTH_SHORT).show();
+//                }
+
             }
         });
 //        check if bt adapter is available on device
@@ -154,8 +182,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             editor.apply();
         }
         pairedDevices = btAdapter.getBondedDevices();
-        pairedDeviceListView=findViewById(R.id.pairedDevices);
-        pairedDeviceListView.setAdapter(pairedDeviceList);
+
         makeList();
         //        Get paired devices and adapt the for ListView
 
@@ -194,19 +221,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     btHideButton.setVisibility(View.VISIBLE);
                     btStuff.setVisibility(View.VISIBLE);
                 }
-                if(btAdapter.isEnabled()) {
-//                    pairedDeviceList.clear();
-//                    if (pairedDevices.size()>0) {
-//                        for (BluetoothDevice device : pairedDevices) pairedDeviceList.add(device.getName());
-//                    }else pairedDeviceList.add("No devices paired or\nBluetooth turned off");
-                    makeList();
-                }
-
+                if(btAdapter.isEnabled()) makeList();
             }
         });
-
-
-
 
         // sound graphics
         soundOn = findViewById(R.id.soundOn);
@@ -504,7 +521,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        btAdapter.disable();//TYLKO TO POTEM USUŃ
+        if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
+        this.unregisterReceiver(mReceiver);
     }
 
 }
