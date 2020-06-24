@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private static final int ENABLE_BT_REQUEST_CODE=1;
     private static final String PREFERENCES= "globalValues";
-    public final BluetoothAdapter btAdapter=BluetoothAdapter.getDefaultAdapter();
+    public BluetoothAdapter btAdapter;
 
     public void makeList(){
         pairedDevices = btAdapter.getBondedDevices();
@@ -82,20 +83,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         else pairedDeviceList.add("No devices paired or Bluetooth turned off");
         pairedDeviceList.notifyDataSetChanged();
     }
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            if (BluetoothDevice.ACTION_FOUND.equals(action)){
-//                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                discoveredDevices.add(device);
-
-                discoveredDeviceList.add(device.getName());
-                discoveredDeviceList.notifyDataSetChanged();
-            }
-        }
-    };
+//    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//            if (BluetoothDevice.ACTION_FOUND.equals(action)){
+//                Log.d("found","device found"+device.getName());
+////                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+////                discoveredDevices.add(device);
+//
+//                discoveredDeviceList.add(device.getName());
+//                discoveredDeviceList.notifyDataSetChanged();
+//            }
+//            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
+//                Toast.makeText(MainActivity.this, "Started discovery process", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    };
 
     @Override
     public void onActivityResult(int requestCode,int resultCode, Intent data) {
@@ -119,11 +124,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        btAdapter=BluetoothAdapter.getDefaultAdapter();
+
+
+        final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (BluetoothDevice.ACTION_FOUND.equals(action)){
+                    Log.d("found","device found"+device.getName());
+//                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                discoveredDevices.add(device);
+
+                    discoveredDeviceList.add(device.getName());
+                    discoveredDeviceList.notifyDataSetChanged();
+                }
+                if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
+                    Toast.makeText(MainActivity.this, "Started discovery process", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         this.registerReceiver(mReceiver, filter);
 
         // Example of a call to a native method
@@ -162,9 +192,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         discoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
-                btAdapter.startDiscovery();
-                    Toast.makeText(getApplicationContext(), "Discovering other bluetooth devices...", Toast.LENGTH_SHORT).show();
+//                if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
+                    btAdapter.startDiscovery();
+//                    Toast.makeText(getApplicationContext(), "Discovering other bluetooth devices...", Toast.LENGTH_SHORT).show();
                     pairedDeviceListView.setVisibility(View.INVISIBLE);
                     discoveredDeviceListView.setVisibility(View.VISIBLE);
                     btName.setVisibility(View.INVISIBLE);
@@ -522,7 +552,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onDestroy(){
         super.onDestroy();
         if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
-        this.unregisterReceiver(mReceiver);
+//        this.unregisterReceiver(mReceiver);
     }
 
 }
