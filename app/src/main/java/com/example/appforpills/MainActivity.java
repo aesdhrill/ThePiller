@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         else pairedDeviceList.add("No devices paired or Bluetooth turned off");
         pairedDeviceList.notifyDataSetChanged();
+        pairedDeviceListView.setClickable(true);
     }
 //    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 //        @Override
@@ -134,10 +135,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (BluetoothDevice.ACTION_FOUND.equals(action)){
                     Log.d("found","device found"+device.getName());
-//                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                discoveredDevices.add(device);
-
-                    discoveredDeviceList.add(device.getName());
+                    if (device.getName()==null) Log.d ("null name response", "last null device at address "+ device.getAddress());
+                    discoveredDevices.add(device);
+                    if ((device.getName() != null)) {
+                        discoveredDeviceList.add(device.getName());
+                    } else {
+                        discoveredDeviceList.add("Name unknown\nDevice address: " + device.getAddress());
+                    }
                     discoveredDeviceList.notifyDataSetChanged();
                 }
                 if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
@@ -192,9 +196,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         discoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
+                if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
+                    discoveredDeviceList.clear();
                     btAdapter.startDiscovery();
-//                    Toast.makeText(getApplicationContext(), "Discovering other bluetooth devices...", Toast.LENGTH_SHORT).show();
                     pairedDeviceListView.setVisibility(View.INVISIBLE);
                     discoveredDeviceListView.setVisibility(View.VISIBLE);
                     btName.setVisibility(View.INVISIBLE);
@@ -214,15 +218,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         pairedDevices = btAdapter.getBondedDevices();
 
         makeList();
-        //        Get paired devices and adapt the for ListView
-
-//        pairedDeviceList = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,pairedDevices);
-//        makeList();
 
         pairedDeviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Object o = pairedDeviceListView.getItemAtPosition(i);
+                final String str=(String) o;
+                Toast.makeText(getApplicationContext(),"Connecting to "+ str,Toast.LENGTH_SHORT).show();
+                final Handler delayOneSec = new Handler();
+                delayOneSec.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btName.setVisibility(View.VISIBLE);
+                        btDiscoveredName.setVisibility(View.INVISIBLE);
+                        pairedDeviceListView.setVisibility(View.VISIBLE);
+                        discoveredDeviceListView.setVisibility(View.INVISIBLE);
+                        btStuff.setVisibility(View.INVISIBLE);
+                        btHideButton.setVisibility(View.INVISIBLE);
+                        btShowButton.setVisibility(View.VISIBLE);
+                        Toast.makeText(getApplicationContext(), "Connected to "+ str, Toast.LENGTH_SHORT).show();
+                    }
+                },1000);
             }
         });
 
