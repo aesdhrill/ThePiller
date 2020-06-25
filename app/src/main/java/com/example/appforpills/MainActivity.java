@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final String PREFERENCES= "globalValues";
     public BluetoothAdapter btAdapter;
     public int btShowOrHide=LAST_STATE_HIDE;
+    public BroadcastReceiver mReceiver;
+    public SharedPreferences.Editor editor;
 
     public void makeList(){
         pairedDevices = btAdapter.getBondedDevices();
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         btAdapter=BluetoothAdapter.getDefaultAdapter();
 
 
-        final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
@@ -176,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         discoveredDeviceList = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1);
 
         globalSettings=getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor= globalSettings.edit();
+        editor= globalSettings.edit();
         //check if first run somehow, or only push value once
         if (!(globalSettings.contains("firstRunDone"))){
             editor.putBoolean("soundState",false);
@@ -519,36 +521,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         // Change melody
 
-        Spinner spinner = findViewById(R.id.changeMelody);
+        final Spinner spinner = findViewById(R.id.changeMelody);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.melodies, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setSelection(globalSettings.getInt("tone",-1)-1);
         spinner.setOnItemSelectedListener(this);
-
-
-//        btStuff= findViewById(R.id.btConnection);
-//        btStuff.setVisibility(View.VISIBLE);
-//
-//        btStuff.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(btStuff.getVisibility()==View.VISIBLE){
-//                    switchSound.setClickable(false);
-//                    switchLight.setClickable(false);
-//                    switchLight.setClickable(false);
-//                }
-//            }
-//        }
-
-//            );
+        Log.d("read melody","Melody saved in settings="+globalSettings.getInt("tone",-1));
     }
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id ) {
         String text = parent.getItemAtPosition(position).toString();
+        Log.d("spinner text","spinner selected item= "+text);
+        switch (text) {
+            case "Melody 1":
+                editor.putInt("tone", 1).apply();
+                break;
+            case "Melody 2":
+                editor.putInt("tone", 2).apply();
+                break;
+            case "Melody 3":
+                editor.putInt("tone", 3).apply();
+                break;
+        }
         Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
-
 //        String[] tones;
 //        tones = getResources().getStringArray(R.array.tones);
 //
@@ -594,7 +592,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onDestroy(){
         super.onDestroy();
         if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
-//        this.unregisterReceiver(mReceiver);
+        this.unregisterReceiver(mReceiver);
     }
 
 }
