@@ -70,12 +70,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     TextView btName;
     TextView btDiscoveredName;
 
-    private static final int ENABLE_BT_REQUEST_CODE=65535;// FFFF HEX
-    private static final int ACCESS_LOCATION_REQUEST_CODE=4288;//10C0 HEX
+    private static final int ENABLE_BT_REQUEST_CODE=64;// FFFF HEX
+    private static final int ACCESS_LOCATION_REQUEST_CODE=32;//10C0 HEX
     private static final int LAST_STATE_HIDE=255;//00FF HEX
     private static final int LAST_STATE_SHOW=35;//0023 HEX
     private static final String PREFERENCES= "globalValues";
     public BluetoothAdapter btAdapter;
+    public int btShowOrHide=LAST_STATE_HIDE;
 
     public void makeList(){
         pairedDevices = btAdapter.getBondedDevices();
@@ -140,8 +141,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (BluetoothDevice.ACTION_FOUND.equals(action)){
                     Log.d("found","device found"+device.getName());
                     if (device.getName()==null) Log.d ("null name response", "last null device at address "+ device.getAddress());
-                    discoveredDevices.add(device);
                     if ((device.getName() != null)) {
+//                        discoveredDevices.add(device);
                         discoveredDeviceList.add(device.getName());
                     } else {
                         discoveredDeviceList.add("Name unknown\nDevice address: " + device.getAddress());
@@ -258,7 +259,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (btStuff.getVisibility()==View.VISIBLE){
                     btStuff.setVisibility(View.INVISIBLE);
                     btHideButton.setVisibility(View.INVISIBLE);
-                    if (btAdapter.isEnabled()) btShowButton.setVisibility(View.VISIBLE);
+                    if (btAdapter.isEnabled()) {
+                        btShowOrHide=LAST_STATE_SHOW;
+                        btShowButton.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
@@ -268,6 +272,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onClick(View v){
                 if (btStuff.getVisibility()==View.INVISIBLE){
                     btShowButton.setVisibility(View.INVISIBLE);
+                    btShowOrHide=LAST_STATE_HIDE;
                     btHideButton.setVisibility(View.VISIBLE);
                     btStuff.setVisibility(View.VISIBLE);
                 }
@@ -328,6 +333,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             switchBluetooth.setChecked(true);
             if (btStuff.getVisibility()==View.INVISIBLE){
                 btShowButton.setVisibility(View.INVISIBLE);
+                btShowOrHide=LAST_STATE_HIDE;
                 btHideButton.setVisibility(View.VISIBLE);
                 btStuff.setVisibility(View.VISIBLE);
             }
@@ -338,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             if (btStuff.getVisibility()==View.VISIBLE){
                 btStuff.setVisibility(View.INVISIBLE);
                 btHideButton.setVisibility(View.INVISIBLE);
+                btShowOrHide=LAST_STATE_SHOW;
                 btShowButton.setVisibility(View.VISIBLE);
             }
         }
@@ -359,6 +366,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         public void run() {
                             if (btStuff.getVisibility()==View.INVISIBLE){
                                 btShowButton.setVisibility(View.INVISIBLE);
+                                btShowOrHide=LAST_STATE_HIDE;
                                 btHideButton.setVisibility(View.VISIBLE);
                                 btStuff.setVisibility(View.VISIBLE);
                             }
@@ -424,6 +432,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     switchSound.setClickable(true);
                     switchLight.setClickable(true);
                     switchBluetooth.setClickable(true);
+                    if (btAdapter.isEnabled()){
+                        if ((btShowOrHide == LAST_STATE_HIDE)) {
+                            btHideButton.setVisibility(View.VISIBLE);
+                        } else if ((btShowOrHide == LAST_STATE_SHOW)){
+                            btShowButton.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
                 else {
                     settingsWindow.setVisibility(View.VISIBLE);
@@ -431,6 +446,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     switchSound.setClickable(false);
                     switchLight.setClickable(false);
                     switchBluetooth.setClickable(false);
+                    if (btAdapter.isEnabled()){
+                        if ((btShowOrHide == LAST_STATE_HIDE)) {
+                            btHideButton.setVisibility(View.INVISIBLE);
+                        } else if ((btShowOrHide == LAST_STATE_SHOW)){
+                            btShowButton.setVisibility(View.INVISIBLE);
+                        }
+                    }
                 }
             }
         });
