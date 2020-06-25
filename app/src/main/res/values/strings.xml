@@ -3,7 +3,7 @@
     <string name="schedule">SCHEDULE</string>
     <string name="the_piller">The Piller</string>
     <string name="sleep_mode">Sleep mode</string>
-    <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_notifications">Notifications</string>
     <string name="settings">SETTINGS</string>
     <string name="about_us">About Us</string>
     <string name="greetings">Greetings!</string>
@@ -21,6 +21,8 @@
     <string name="btConnection">List of paired Bluetooth devices</string>
     <string name="btConnectionDiscovered">List of found Bluetooth devices</string>
     <string name="discover">Search for another device</string>
+    <string name="showDevices">Show device list</string>
+    <string name="hideDevices">Hide device list</string>
     <string-array name="melodies">
         <item>Melody 1</item>
         <item>Melody 2</item>

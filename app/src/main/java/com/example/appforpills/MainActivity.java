@@ -85,6 +85,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public void makeList(){
         pairedDevices = btAdapter.getBondedDevices();
+        discoveredDeviceListView.setVisibility(View.INVISIBLE);
+        btDiscoveredName.setVisibility(View.INVISIBLE);
+        pairedDeviceListView.setVisibility(View.VISIBLE);
+        btName.setVisibility(View.VISIBLE);
         if (pairedDevices.size()>0) {
             pairedDeviceList.clear();
             for (BluetoothDevice device : pairedDevices) pairedDeviceList.add(device.getName());
@@ -93,25 +97,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         pairedDeviceList.notifyDataSetChanged();
         pairedDeviceListView.setClickable(true);
     }
-    
-//    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            String action = intent.getAction();
-//            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//            if (BluetoothDevice.ACTION_FOUND.equals(action)){
-//                Log.d("found","device found"+device.getName());
-//                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                discoveredDevices.add(device);
-//
-//                discoveredDeviceList.add(device.getName());
-//                discoveredDeviceList.notifyDataSetChanged();
-//            }
-//            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
-//                Toast.makeText(MainActivity.this, "Started discovery process", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    };
 
     @Override
     public void onActivityResult(int requestCode,int resultCode, Intent data) {
@@ -213,10 +198,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     discoveredDeviceListView.setVisibility(View.VISIBLE);
                     btName.setVisibility(View.INVISIBLE);
                     btDiscoveredName.setVisibility(View.VISIBLE);
-//                }else{
-//                    Toast.makeText(getApplicationContext(), "Something went wrong! Discovery has failed to start.", Toast.LENGTH_SHORT).show();
-//                }
-
             }
         });
 //        check if bt adapter is available on device
