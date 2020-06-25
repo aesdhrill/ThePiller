@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,11 +36,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -86,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static final int LAST_STATE_HIDE=255;//00FF HEX
     private static final int LAST_STATE_SHOW=35;//0023 HEX
     private static final String PREFERENCES= "globalValues";
+    private static final UUID uuid=UUID.fromString("f3a298ff-89b0-4c40-be43-5902a9fc8202");
     public BluetoothAdapter btAdapter;
     public int btShowOrHide=LAST_STATE_HIDE;
     public BroadcastReceiver mReceiver;
@@ -147,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case ACCESS_LOCATION_REQUEST_CODE: {
                 if (grantResults.length > 0
@@ -178,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,7 +210,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Toast.makeText(MainActivity.this, "Started discovery process", Toast.LENGTH_SHORT).show();
                     Log.d("Discovery start","Started discovery process");
                 }
-                if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) Log.d("Discovery over","Finished discovery process");
+                if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                    Toast.makeText(MainActivity.this, "Finished discovery process",Toast.LENGTH_SHORT).show();
+                    Log.d("Discovery over","Finished discovery process");
+                }
             }
         };
 
@@ -276,21 +282,33 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Object o = pairedDeviceListView.getItemAtPosition(i);
                 final String str=(String) o;
-                Toast.makeText(getApplicationContext(),"Connecting to "+ str,Toast.LENGTH_SHORT).show();
-                final Handler delayOneSec = new Handler();
-                delayOneSec.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        btName.setVisibility(View.VISIBLE);
-                        btDiscoveredName.setVisibility(View.INVISIBLE);
-                        pairedDeviceListView.setVisibility(View.VISIBLE);
-                        discoveredDeviceListView.setVisibility(View.INVISIBLE);
-                        btStuff.setVisibility(View.INVISIBLE);
-                        btHideButton.setVisibility(View.INVISIBLE);
-                        btShowButton.setVisibility(View.VISIBLE);
-                        Toast.makeText(getApplicationContext(), "Connected to "+ str, Toast.LENGTH_SHORT).show();
+                for (BluetoothDevice device : pairedDevices) {
+                    if (device.getName().equals(str)) {
+                        try {
+                            BluetoothSocket pairedConnectionSocket=device.createRfcommSocketToServiceRecord(uuid);
+                            if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
+                            pairedConnectionSocket.connect();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Log.e("Socket failed","Socket's create() failed with code" + e);
+                        }
                     }
-                },1000);
+                }
+//                Toast.makeText(getApplicationContext(),"Connecting to "+ str,Toast.LENGTH_SHORT).show();
+//                final Handler delayOneSec = new Handler();
+//                delayOneSec.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        btName.setVisibility(View.VISIBLE);
+//                        btDiscoveredName.setVisibility(View.INVISIBLE);
+//                        pairedDeviceListView.setVisibility(View.VISIBLE);
+//                        discoveredDeviceListView.setVisibility(View.INVISIBLE);
+//                        btStuff.setVisibility(View.INVISIBLE);
+//                        btHideButton.setVisibility(View.INVISIBLE);
+//                        btShowButton.setVisibility(View.VISIBLE);
+//                        Toast.makeText(getApplicationContext(), "Connected to "+ str, Toast.LENGTH_SHORT).show();
+//                    }
+//                },1000);
             }
         });
 
