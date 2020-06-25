@@ -70,7 +70,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     TextView btName;
     TextView btDiscoveredName;
 
-    private static final int ENABLE_BT_REQUEST_CODE=1;
+    private static final int ENABLE_BT_REQUEST_CODE=65535;// FFFF HEX
+    private static final int ACCESS_LOCATION_REQUEST_CODE=4288;//10C0 HEX
+    private static final int LAST_STATE_HIDE=255;//00FF HEX
+    private static final int LAST_STATE_SHOW=35;//0023 HEX
     private static final String PREFERENCES= "globalValues";
     public BluetoothAdapter btAdapter;
 
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         pairedDeviceList.notifyDataSetChanged();
         pairedDeviceListView.setClickable(true);
     }
+    
 //    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 //        @Override
 //        public void onReceive(Context context, Intent intent) {
@@ -91,8 +95,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 //            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 //            if (BluetoothDevice.ACTION_FOUND.equals(action)){
 //                Log.d("found","device found"+device.getName());
-////                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-////                discoveredDevices.add(device);
+//                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                discoveredDevices.add(device);
 //
 //                discoveredDeviceList.add(device.getName());
 //                discoveredDeviceList.notifyDataSetChanged();
