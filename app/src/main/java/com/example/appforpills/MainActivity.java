@@ -83,6 +83,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public BroadcastReceiver mReceiver;
     public SharedPreferences.Editor editor;
 
+    public void discoverDevices(){
+        if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
+        discoveredDeviceList.clear();
+        btAdapter.startDiscovery();
+        pairedDeviceListView.setVisibility(View.INVISIBLE);
+        discoveredDeviceListView.setVisibility(View.VISIBLE);
+        btName.setVisibility(View.INVISIBLE);
+        btDiscoveredName.setVisibility(View.VISIBLE);
+    }
     public void makeList(){
         pairedDevices = btAdapter.getBondedDevices();
         discoveredDeviceListView.setVisibility(View.INVISIBLE);
@@ -141,7 +150,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
                     Toast.makeText(MainActivity.this, "Started discovery process", Toast.LENGTH_SHORT).show();
+                    Log.d("Discovery start","Started discovery process");
                 }
+                if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) Log.d("Discovery over","Finished discovery process");
             }
         };
 
@@ -167,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         globalSettings=getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         editor= globalSettings.edit();
+
         //check if first run somehow, or only push value once
         if (!(globalSettings.contains("firstRunDone"))){
             editor.putBoolean("soundState",false);
@@ -191,13 +203,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         discoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (btAdapter.isDiscovering()) btAdapter.cancelDiscovery();
-                    discoveredDeviceList.clear();
-                    btAdapter.startDiscovery();
-                    pairedDeviceListView.setVisibility(View.INVISIBLE);
-                    discoveredDeviceListView.setVisibility(View.VISIBLE);
-                    btName.setVisibility(View.INVISIBLE);
-                    btDiscoveredName.setVisibility(View.VISIBLE);
+                discoverDevices();
             }
         });
 //        check if bt adapter is available on device
@@ -443,6 +449,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+        //sleep mode handle
         // mode graphics
         sleepModeOn = findViewById(R.id.sleepMode);
         // mode switch
@@ -470,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
             }
         });
-
+        //notifications state handle
         //notifications graphics
         notificationsOff = findViewById(R.id.notificationsOff);
 
