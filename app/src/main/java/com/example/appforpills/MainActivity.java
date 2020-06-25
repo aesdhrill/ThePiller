@@ -1,13 +1,19 @@
 package com.example.appforpills;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -26,6 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -105,6 +113,53 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         else pairedDeviceList.add("No devices paired or Bluetooth turned off");
         pairedDeviceList.notifyDataSetChanged();
         pairedDeviceListView.setClickable(true);
+    }
+    public void requestLocationAccess() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Location access needed");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setMessage("Please enable access to location. Without it, you will not be able to scan for nearby devices");
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @TargetApi(Build.VERSION_CODES.M)
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            requestPermissions(
+                                    new String[]
+                                            {Manifest.permission.ACCESS_FINE_LOCATION}
+                                    , ACCESS_LOCATION_REQUEST_CODE);
+                        }
+                    });
+                    builder.show();
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            ACCESS_LOCATION_REQUEST_CODE);
+                }
+            } else {
+                discoverDevices();
+            }
+        } else {
+            discoverDevices();
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case ACCESS_LOCATION_REQUEST_CODE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    discoverDevices();
+                } else {
+                    Toast.makeText(this, "You have disabled location permission", Toast.LENGTH_LONG).show();
+                }
+//                return;
+            }
+        }
     }
 
     @Override
@@ -188,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             editor.putBoolean("ledState",false);
             editor.putBoolean("sleepMode",false);
             editor.putBoolean("notifications",true);
-            editor.putInt("volume",2);
+            editor.putInt("volume",4);
             editor.putInt("tone",1);
             editor.putBoolean("firstRunDone",true);
             editor.apply();
@@ -203,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         discoverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                discoverDevices();
+                requestLocationAccess();
             }
         });
 //        check if bt adapter is available on device
