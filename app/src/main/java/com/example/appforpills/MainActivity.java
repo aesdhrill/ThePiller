@@ -19,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Set<BluetoothDevice> discoveredDevices;
     TextView btName;
     TextView btDiscoveredName;
+    SeekBar volume;
+    Spinner spinner;
 
     private static final int ENABLE_BT_REQUEST_CODE=64;// FFFF HEX
     private static final int ACCESS_LOCATION_REQUEST_CODE=32;//10C0 HEX
@@ -518,10 +521,54 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+        //Change volume
+        volume=findViewById(R.id.seekBar);
+        volume.setMax(100);
+        int step = volume.getMax()/4;
+        volume.setProgress(globalSettings.getInt("volume",-1)*step);
+        Log.d("read progress","Read saved value of progress: "+globalSettings.getInt("volume",-1));
+        volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int newProgress=0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                newProgress=i;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                Log.d("old progress","Old progress value = "+ volume.getProgress()+" with volume set to "+globalSettings.getInt("volume",-1));
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (newProgress>=0 && newProgress<10) editor.putInt("volume",0).apply();
+                else if (newProgress>10 && newProgress<=30) {
+                    newProgress=25;
+                    editor.putInt("volume",1).apply();
+                }
+                else if (newProgress>30 && newProgress<=50){
+                    newProgress=50;
+                    editor.putInt("volume",2).apply();
+                }
+                else if (newProgress>50 && newProgress<=80){
+                    newProgress=75;
+                    editor.putInt("volume",3).apply();
+                }
+                else if (newProgress>80 && newProgress<=100){
+                    newProgress=100;
+                    editor.putInt("volume",4).apply();
+                }
+                else {
+                    Log.d("progress error","Invalid progress value:"+newProgress);
+                }
+                Log.d("New progress","set progress to "+newProgress+", resulting in volume of "+globalSettings.getInt("volume",-1));
+            }
+        });
 
         // Change melody
 
-        final Spinner spinner = findViewById(R.id.changeMelody);
+        spinner = findViewById(R.id.changeMelody);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.melodies, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
