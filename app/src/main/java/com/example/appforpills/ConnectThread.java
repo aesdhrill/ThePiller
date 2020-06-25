@@ -40,6 +40,7 @@ public class ConnectThread extends Thread {
             return;
         }
         //if succeeded
+
 //        manageConnectedSocket(mmSocket);
     }
 

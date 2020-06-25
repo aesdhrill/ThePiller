@@ -189,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         btAdapter=BluetoothAdapter.getDefaultAdapter();
 
-
         mReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
